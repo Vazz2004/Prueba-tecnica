@@ -1,6 +1,8 @@
 import net from 'node:net'
 import { resolve } from 'node:path'
-
+import fs from 'node:fs'
+import path from "path";
+import { fileURLToPath } from "url";
 
 //Pasamos como parametro el callback para invocarlo despues de que el cliente termina su conexion y asi devovemos los datos esperados ya que el return en estos casos no me devuelve la info 
 
@@ -109,7 +111,7 @@ function buscarUsuario(id, callback) {
         }
     }, 1000);
 }
-
+/*
 buscarUsuario(2, (err, user) => {
     if (err) console.log(err);
     else console.log("Usuario encontrado:", user);
@@ -127,5 +129,46 @@ buscarUsuario(2, (err, user) => {
         });
     });
 });
+*/
 
+//3 - Explica qué hace la funcion. Identifica y corrige los errores en el siguiente código. Si ves algo innecesario, elimínalo. 
+// Luego mejoralo para que siga funcionando con callback y luego haz lo que consideres para mejorar su legibilidad.
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export function procesarArchivo(callback) {
+    const rutaEntrada = path.join(__dirname, "input.txt");
+    const rutaSalida = path.join(__dirname, "output.txt");
+
+    // Función para escribir archivo
+    const handleWritefile = (error) => {
+        if (error) {
+            console.error("Error guardando archivo:", error.message);
+            callback(error);
+            return;
+        }
+
+        console.log("Archivo procesado y guardado con éxito");
+        callback(null);
+    };
+
+    // Función para leer archivo
+    const handleReadfile = (error, contenido) => {
+        if (error) {
+            console.error("Error leyendo archivo:", error.message);
+            callback(error);
+            return;
+        }
+
+        const textoProcesado = contenido.toUpperCase();
+        fs.writeFile(rutaSalida, textoProcesado, handleWritefile);
+    };
+
+    fs.readFile(rutaEntrada, "utf8", handleReadfile);
+}
+
+// Ejecución
+procesarArchivo((err) => {
+    if (!err) console.log("ya funciona");
+});
