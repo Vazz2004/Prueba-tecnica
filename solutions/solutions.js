@@ -172,3 +172,48 @@ export function procesarArchivo(callback) {
 procesarArchivo((err) => {
     if (!err) console.log("ya funciona");
 });
+
+
+
+
+
+export async function procesarArchivoPromise() {
+    const rutaEntrada = path.join(__dirname, "input.txt");
+    const rutaSalida = path.join(__dirname, "output.txt");
+
+
+    await fs.promises.readFile(rutaEntrada,'utf-8')
+    const textoProcesado = contenido.toUpperCase()
+    await fs.promises.writeFile(rutaSalida, textoProcesado)
+
+    // Función para escribir archivo
+    // const handleWritefile = (error) => {
+    //     if (error) {
+    //         console.error("Error guardando archivo:", error.message);
+    //         callback(error);
+    //         return;
+    //     }
+
+    //     console.log("Archivo procesado y guardado con éxito");
+    //     callback(null);
+    // };
+
+    // // Función para leer archivo
+    // const handleReadfile = (error, contenido) => {
+    //     if (error) {
+    //         console.error("Error leyendo archivo:", error.message);
+    //         callback(error);
+    //         return;
+    //     }
+
+    //     const textoProcesado = contenido.toUpperCase();
+    //     fs.writeFile(rutaSalida, textoProcesado, handleWritefile);
+    // };
+
+    // fs.readFile(rutaEntrada, "utf8", handleReadfile);
+}
+
+// Ejecución
+procesarArchivo((err) => {
+    if (!err) console.log("ya funciona");
+});
